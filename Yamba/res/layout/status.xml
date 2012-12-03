@@ -1,31 +1,31 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
     tools:context=".StatusActivity" >
 
     <TextView
-        android:id="@+id/textView1"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/titleStatus"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="30sp"
         android:textStyle="bold" 
-        android:layout_margin="10dp"
-        />
+        android:layout_margin="10dip" />
 
     <EditText
-        android:id="@+id/editText1"
+        android:id="@+id/editText"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dip"
+        android:gravity="top|center_horizontal"
         android:layout_weight="1"
-        android:ems="10"/>
+        android:ems="10"
+        android:hint="@string/hintText" />
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/updateButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/buttonUpdate"
