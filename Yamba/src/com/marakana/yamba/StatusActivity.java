@@ -1,5 +1,7 @@
 package com.marakana.yamba;
 
+import winterwell.jtwitter.Twitter;
+import winterwell.jtwitter.TwitterException;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,6 +13,7 @@ import android.view.View.OnClickListener;
 public class StatusActivity extends Activity implements OnClickListener{
 	EditText editText;
 	Button updateButton;
+	Twitter twitter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -25,15 +28,23 @@ public class StatusActivity extends Activity implements OnClickListener{
 		
 		//we assign onclick
 		updateButton.setOnClickListener(this);
+		
+		twitter = new Twitter("MariusMailat", "parola");
+		twitter.setAPIRootUrl("http://yamba.marakana.com/api");		
 	}
 	
 	public void onClick (View v)
 	{
 		//send update to yamba.marakana.com
-		//TODO
-		
-		//log the message
-		Log.d ("Yamba", "Message sent:" + editText.getText().toString());
+		try
+		{
+			twitter.setStatus(editText.getText().toString());
+			Log.d ("Yamba", "Message sent:" + editText.getText().toString());
+		}
+		catch (TwitterException e)
+		{
+			Log.e("Yamba", e.toString());
+		}
 	}
 
 }
