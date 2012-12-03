@@ -22,6 +22,8 @@ public class StatusActivity extends Activity implements OnClickListener{
 		
 		//updateButton
 		updateButton = (Button) findViewById(R.id.buttonUpdate);
+		
+		//we assign onclick
 		updateButton.setOnClickListener(this);
 	}
 	
