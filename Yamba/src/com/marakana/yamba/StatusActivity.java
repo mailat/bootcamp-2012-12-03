@@ -6,8 +6,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.app.Activity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -33,8 +36,27 @@ public class StatusActivity extends Activity implements OnClickListener{
 		
 		twitter = new Twitter("MariusMailat", "parola");
 		twitter.setAPIRootUrl("http://yamba.marakana.com/api");		
+		
+		//add a counter for the entered chars
+		TextWatcher textWatcher = new TextWatcher() {
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,int after) {
+			}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				TextView counterText = (TextView) findViewById(R.id.counterText);
+				counterText.setText(String.valueOf(editText.getText().toString().length()).toString());
+			}
+
+			@Override
+			public void afterTextChanged(Editable s) {
+			}
+		};
+		editText.addTextChangedListener(textWatcher);
 	}
 	
+	@Override
 	public void onClick (View v)
 	{
 		//send update to yamba.marakana.com
@@ -43,12 +65,13 @@ public class StatusActivity extends Activity implements OnClickListener{
 	}
 
 	class PostToTwitter extends AsyncTask<String, Integer, String>{
-
+		Twitter.Status status;
+		
 		@Override
 		protected String doInBackground(String... statuses) {	
 			try
 			{
-				Twitter.Status status = twitter.setStatus(editText.getText().toString());
+				status = twitter.setStatus(editText.getText().toString());
 				Log.d ("Yamba", "Message sent:" + editText.getText().toString());
 				return (status.text);
 			}
@@ -61,13 +84,13 @@ public class StatusActivity extends Activity implements OnClickListener{
 
 		@Override
 		protected void onPostExecute(String result) {
+			editText.setText("");
 			Toast.makeText(StatusActivity.this, result, Toast.LENGTH_LONG).show();
 		}
 
 		@Override
 		protected void onProgressUpdate(Integer... values) {
 			super.onProgressUpdate(values);
-		}
-		
+		}		
 	}
 }

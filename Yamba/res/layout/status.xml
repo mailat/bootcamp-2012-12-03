@@ -15,6 +15,14 @@
         android:textStyle="bold" 
         android:layout_margin="10dip" />
 
+    <TextView
+        android:id="@+id/counterText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#FF0000"
+        android:gravity="right"
+        android:text="0" />
+
     <EditText
         android:id="@+id/editText"
         android:layout_width="match_parent"
@@ -22,6 +30,7 @@
         android:gravity="top|center_horizontal"
         android:layout_weight="1"
         android:ems="10"
+		android:maxLength="140"
         android:hint="@string/hintText" />
 
     <Button
