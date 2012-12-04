@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.app.Activity;
+import android.content.Intent;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -24,6 +25,12 @@ public class StatusActivity extends Activity implements OnClickListener{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.status);
+		
+		//start automatic  PrefsActivity
+		Intent intent = new Intent(StatusActivity.this, PrefsActivity.class);
+		startActivity(intent);
+		finish();
+
 		
 		//get the text entered by user
 		editText = (EditText) findViewById(R.id.editText);
