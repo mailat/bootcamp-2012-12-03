@@ -4,12 +4,15 @@ import winterwell.jtwitter.Twitter;
 import winterwell.jtwitter.TwitterException;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -19,21 +22,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-public class StatusActivity extends Activity implements OnClickListener{
+public class StatusActivity extends Activity implements OnClickListener, OnSharedPreferenceChangeListener{
 	EditText editText;
 	Button updateButton;
 	Twitter twitter;
+	SharedPreferences prefs;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.status);
 		
-//		//start automatic  PrefsActivity
-//		Intent intent = new Intent(StatusActivity.this, PrefsActivity.class);
-//		startActivity(intent);
-//		finish();
-
+		//get the preferences and register on preferences changes
+		prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		prefs.registerOnSharedPreferenceChangeListener(this);
 		
 		//get the text entered by user
 		editText = (EditText) findViewById(R.id.editText);
@@ -42,10 +44,7 @@ public class StatusActivity extends Activity implements OnClickListener{
 		updateButton = (Button) findViewById(R.id.buttonUpdate);
 		
 		//we assign onclick
-		updateButton.setOnClickListener(this);
-		
-		twitter = new Twitter("MariusMailat", "parola");
-		twitter.setAPIRootUrl("http://yamba.marakana.com/api");		
+		updateButton.setOnClickListener(this);	
 		
 		//add a counter for the entered chars
 		TextWatcher textWatcher = new TextWatcher() {
@@ -81,7 +80,7 @@ public class StatusActivity extends Activity implements OnClickListener{
 		protected String doInBackground(String... statuses) {	
 			try
 			{
-				status = twitter.setStatus(editText.getText().toString());
+				status = getTwitter().setStatus(editText.getText().toString());
 				Log.d ("Yamba", "Message sent:" + editText.getText().toString());
 				return (status.text);
 			}
@@ -121,6 +120,30 @@ public class StatusActivity extends Activity implements OnClickListener{
 		}	
 		return (true);
 	}
+
+	@Override
+	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
+			String key) {
+		//invalidate the twitter existing object
+		twitter = null;
+	}
 	
+	private Twitter getTwitter()
+	{
+		if ( twitter == null )
+		{
+			String username, password, apiRoot;
+			username = prefs.getString("username", "");
+			password = prefs.getString("password", "");
+			apiRoot = prefs.getString("apiRoot", "http://yamba.marakana.com/api");
+			
+			//connect to the twitter
+			//twitter = new Twitter("MariusMailat", "parola");
+			twitter = new Twitter(username, password);
+			twitter.setAPIRootUrl(apiRoot);		
+		}
+		
+		return (twitter);
+	}
 	
 }
