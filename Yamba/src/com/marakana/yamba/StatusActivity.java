@@ -13,6 +13,9 @@ import android.content.Intent;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 
@@ -26,10 +29,10 @@ public class StatusActivity extends Activity implements OnClickListener{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.status);
 		
-		//start automatic  PrefsActivity
-		Intent intent = new Intent(StatusActivity.this, PrefsActivity.class);
-		startActivity(intent);
-		finish();
+//		//start automatic  PrefsActivity
+//		Intent intent = new Intent(StatusActivity.this, PrefsActivity.class);
+//		startActivity(intent);
+//		finish();
 
 		
 		//get the text entered by user
@@ -100,4 +103,24 @@ public class StatusActivity extends Activity implements OnClickListener{
 			super.onProgressUpdate(values);
 		}		
 	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		//inflate the menu
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.menu, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId())
+		{
+		case R.id.itemPrefs:
+			startActivity ( new Intent(this, PrefsActivity.class) );
+		}	
+		return (true);
+	}
+	
+	
 }
