@@ -115,8 +115,8 @@ public class StatusActivity extends Activity implements OnClickListener, OnShare
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId())
 		{
-		case R.id.itemPrefs:
-			startActivity ( new Intent(this, PrefsActivity.class) );
+			case R.id.itemPrefs:
+				startActivity ( new Intent(this, PrefsActivity.class) );
 		}	
 		return (true);
 	}
