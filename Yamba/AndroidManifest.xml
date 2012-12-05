@@ -22,17 +22,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
-        <activity android:name=".PrefsActivity" android:label="Preferences"></activity>
-
-		<activity android:name=".SampleListActivity">
-        	<intent-filter>
-				<action android:name="android.intent.action.MAIN" />
-			</intent-filter> 
-         </activity>
-         
+        <activity
+            android:name="com.marakana.yamba.PrefsActivity"
+            android:label="Preferences" >
+        </activity>
+        <activity android:name="com.marakana.yamba.SampleListActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.marakana.yamba.CustomPreferenceActivity"
+            android:label="@string/title_activity_custom_preference" >
+        </activity>
     </application>
-    
-    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

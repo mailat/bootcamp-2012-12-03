@@ -10,6 +10,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
@@ -32,6 +34,8 @@ public class StatusActivity extends Activity implements OnClickListener, OnShare
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.status);
+		
+		startActivity(new Intent(this, CustomPreferenceActivity.class));
 		
 		//get the preferences and register on preferences changes
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -68,6 +72,21 @@ public class StatusActivity extends Activity implements OnClickListener, OnShare
 	@Override
 	public void onClick (View v)
 	{
+		//if no preferences are added and the user is trying to post an update redirect him to the preference page		
+		if( !prefs.contains("username")  && !prefs.contains("password"))
+		{
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setMessage("Please enter your credentials. You are now redirected to Settings.");
+			builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {			
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					startActivity(new Intent(StatusActivity.this, PrefsActivity.class));					
+				}
+			});	
+			builder.create().show();
+			return;
+		}
+							
 		//send update to yamba.marakana.com
 		String status = editText.getText().toString();
 		new PostToTwitter().execute(status);
