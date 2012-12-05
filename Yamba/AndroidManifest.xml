@@ -35,6 +35,8 @@
             android:name="com.marakana.yamba.CustomPreferenceActivity"
             android:label="@string/title_activity_custom_preference" >
         </activity>
+        
+        <service android:name="UpdateService" android:process=":remote"/>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

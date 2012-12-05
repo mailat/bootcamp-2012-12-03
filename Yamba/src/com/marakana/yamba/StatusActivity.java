@@ -14,7 +14,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -24,22 +23,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-public class StatusActivity extends Activity implements OnClickListener, OnSharedPreferenceChangeListener{
+public class StatusActivity extends Activity implements OnClickListener{
 	EditText editText;
 	Button updateButton;
-	Twitter twitter;
-	SharedPreferences prefs;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.status);
 		
-		startActivity(new Intent(this, CustomPreferenceActivity.class));
-		
-		//get the preferences and register on preferences changes
-		prefs = PreferenceManager.getDefaultSharedPreferences(this);
-		prefs.registerOnSharedPreferenceChangeListener(this);
+		//TODO if you want to start the custom activity startActivity(new Intent(this, CustomPreferenceActivity.class));
 		
 		//get the text entered by user
 		editText = (EditText) findViewById(R.id.editText);
@@ -70,9 +63,14 @@ public class StatusActivity extends Activity implements OnClickListener, OnShare
 	}
 	
 	@Override
+	/**
+	 * onClick
+	 * whenwe push the button UPDATE
+	 */
 	public void onClick (View v)
 	{
 		//if no preferences are added and the user is trying to post an update redirect him to the preference page		
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		if( !prefs.contains("username")  && !prefs.contains("password"))
 		{
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -98,8 +96,8 @@ public class StatusActivity extends Activity implements OnClickListener, OnShare
 		@Override
 		protected String doInBackground(String... statuses) {	
 			try
-			{
-				status = getTwitter().setStatus(editText.getText().toString());
+			{				
+				status = ((YambaApplication) getApplication()).getTwitter().setStatus(editText.getText().toString());
 				Log.d ("Yamba", "Message sent:" + editText.getText().toString());
 				return (status.text);
 			}
@@ -140,29 +138,4 @@ public class StatusActivity extends Activity implements OnClickListener, OnShare
 		return (true);
 	}
 
-	@Override
-	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
-			String key) {
-		//invalidate the twitter existing object
-		twitter = null;
-	}
-	
-	private Twitter getTwitter()
-	{
-		if ( twitter == null )
-		{
-			String username, password, apiRoot;
-			username = prefs.getString("username", "");
-			password = prefs.getString("password", "");
-			apiRoot = prefs.getString("apiRoot", "http://yamba.marakana.com/api");
-			
-			//connect to the twitter
-			//twitter = new Twitter("MariusMailat", "parola");
-			twitter = new Twitter(username, password);
-			twitter.setAPIRootUrl(apiRoot);		
-		}
-		
-		return (twitter);
-	}
-	
 }
