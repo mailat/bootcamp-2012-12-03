@@ -32,7 +32,7 @@ public class StatusActivity extends Activity implements OnClickListener{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.status);
 		
-		//TODO if you want to start the custom activity startActivity(new Intent(this, CustomPreferenceActivity.class));
+		//if you want to start the custom activity startActivity(new Intent(this, CustomPreferenceActivity.class));
 		
 		//get the text entered by user
 		editText = (EditText) findViewById(R.id.editText);

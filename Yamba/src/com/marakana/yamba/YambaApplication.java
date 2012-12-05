@@ -47,7 +47,7 @@ public class YambaApplication extends Application implements OnSharedPreferenceC
 			//connect to the twitter
 			//twitter = new Twitter("MariusMailat", "parola");
 			this.twitter = new Twitter(username, password);
-			this.twitter.setAPIRootUrl(apiRoot);		
+			this.twitter.setAPIRootUrl(apiRoot);	
 		}
 		
 		return (this.twitter);
