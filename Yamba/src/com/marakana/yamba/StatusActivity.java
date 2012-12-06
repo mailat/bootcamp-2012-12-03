@@ -70,18 +70,9 @@ public class StatusActivity extends Activity implements OnClickListener{
 	public void onClick (View v)
 	{
 		//if no preferences are added and the user is trying to post an update redirect him to the preference page		
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-		if( !prefs.contains("username")  && !prefs.contains("password"))
+		if( !existsPreferences() )
 		{
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setMessage("Please enter your credentials. You are now redirected to Settings.");
-			builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {			
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					startActivity(new Intent(StatusActivity.this, PrefsActivity.class));					
-				}
-			});	
-			builder.create().show();
+			redirectToPreferences();
 			return;
 		}
 							
@@ -136,8 +127,25 @@ public class StatusActivity extends Activity implements OnClickListener{
 				startActivity ( new Intent(this, PrefsActivity.class) );
 				break;
 			case R.id.itemServiceStart:
-				startService(new Intent(this,UpdaterService.class));
+				if( !existsPreferences() )
+				{
+					redirectToPreferences();
+				}
+				else
+					startService(new Intent(this,UpdaterService.class));
 				break;
+			case R.id.itemServiceIntentStart:
+				if( !existsPreferences() )
+				{
+					redirectToPreferences();
+				}
+				else
+				{
+					Intent intent = new Intent(this,PosterIntentService.class);
+					intent.putExtra("post_status", "Marius is posting via posterservice.");
+					startService(intent);
+					break;
+				}
 			case R.id.itemServiceStop:
 				stopService(new Intent(this, UpdaterService.class));
 				break;						
@@ -145,4 +153,27 @@ public class StatusActivity extends Activity implements OnClickListener{
 		return (true);
 	}
 
+	private boolean existsPreferences() {
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		if( !prefs.contains("username")  && !prefs.contains("password"))
+		{
+			return false;
+		}
+		return true;
+	}
+	
+	private void redirectToPreferences() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage("Please enter your credentials. You are now redirected to Settings.");
+		builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				startActivity(new Intent(StatusActivity.this, PrefsActivity.class));					
+			}
+		});	
+		builder.create().show();
+		return;
+	}
+
+	
 }

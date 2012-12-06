@@ -38,6 +38,7 @@
         </activity>
         
         <service android:name=".UpdaterService"/>
+        <service android:name=".PosterIntentService"/>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

@@ -37,17 +37,25 @@ public class UpdaterService extends Service {
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		super.onStartCommand(intent, flags, startId);
 		
-		this.runFlag = true;
-		this.updater.start();
-		this.yamba.setServiceRunning(true);
-		
-		Log.d(TAG, "onStartCommand");
-	    return  START_STICKY;
+		if (  !this.runFlag )
+		{
+			this.runFlag = true;
+			this.updater.start();
+			this.yamba.setServiceRunning(true);
+			
+			Log.d(TAG, "onStartCommand");
+	    }
+		else
+		{
+			Log.d(TAG, "onStartCommand - the service is already running");
+		}
+		return  START_STICKY;
 	}
 
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
+		
 		this.runFlag = false;
 		this.updater.interrupt();
 		this.updater = null;
@@ -63,27 +71,28 @@ public class UpdaterService extends Service {
 		public Updater()
 		{
 			super ("UpdaterService-Updater");
+			setPriority( Thread.NORM_PRIORITY );
 		}
 		
 		@Override
 		public void run() {
 			UpdaterService updaterService = UpdaterService.this;
-			while ( updaterService.runFlag)
+			while ( updaterService.runFlag )
 			{
 				Log.d(TAG, "Updater runnning");
 				try {
 					try{
 						//get the timeline from the yamba.marakana.com
 						timeline = yamba.getTwitter().getFriendsTimeline();
+						
+						for (Twitter.Status status : timeline)
+						{
+							Log.d(TAG, status.user.name + " - " + status.text);
+						}
 					}
 					catch (TwitterException e)
 					{
-						Log.d(TAG, "No connection was possible to twitter API");
-					}
-					
-					for (Twitter.Status status : timeline)
-					{
-						Log.d(TAG, status.user.name + " - " + status.text);
+						Log.d(TAG, "No connection was possible to twitter API" + e.toString());
 					}
 					
 					Thread.sleep(DELAY);
