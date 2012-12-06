@@ -39,6 +39,13 @@
         
         <service android:name=".UpdaterService"/>
         <service android:name=".PosterIntentService"/>
+        
+        <receiver android:name=".ReceiverBootCompleted" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+        
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />
