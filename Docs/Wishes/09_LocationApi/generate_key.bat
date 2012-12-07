@@ -1,0 +1,1 @@
+"c:\Program Files\Java\jdk1.6.0_32\bin\keytool.exe" -list -alias androiddebugkey -keystore "c:\Users\berila\.android\debug.keystore" -storepass android -keypass android
