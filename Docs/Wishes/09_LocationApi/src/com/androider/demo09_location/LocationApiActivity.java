@@ -3,6 +3,7 @@ package com.androider.demo09_location;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.AlertDialog;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
@@ -34,13 +35,16 @@ public class LocationApiActivity extends MapActivity implements LocationListener
         setContentView(R.layout.main);
         
         locationText = (TextView)this.findViewById(R.id.placeLocation);
-        Drawable marker = getResources().getDrawable(android.R.drawable.ic_menu_myplaces);
+        Drawable marker = getResources().getDrawable(R.drawable.starbucks_footer);
         marker.setBounds(0, 0, marker.getIntrinsicWidth(), marker.getIntrinsicHeight());
         	   
         map = (MapView)this.findViewById(R.id.placeMapview);
         map.setBuiltInZoomControls(true);
-        map.getOverlays().add(new InterestingLocations(marker, 51117990, 7002583));
+        map.getOverlays().add(new InterestingLocations(marker, 51121209, 7002411));
         map.getOverlays().add(new InterestingLocations(marker, 51117798, 7002642));
+        
+        //map.getOverlays().add(new InterestingLocations(marker,33489442,-86801863));
+       // map.getOverlays().add(new InterestingLocations(marker,33488860, -86800522));
 
         mapController = map.getController();
         mapController.setZoom(16);
@@ -156,6 +160,19 @@ public class LocationApiActivity extends MapActivity implements LocationListener
 		   
 		   boundCenterBottom(marker);
 		  }
+
+		@Override
+		protected boolean onTap(int arg0) {
+			//TODO - starbuck click
+			AlertDialog.Builder dialog = new AlertDialog.Builder(LocationApiActivity.this);
+			  dialog.setTitle("dummy text");
+			  dialog.setMessage("dummy text 2");
+			  dialog.show();
+			  
+			return super.onTap(arg0);
+		}
+		  
+		  
 		 }
 		
 
