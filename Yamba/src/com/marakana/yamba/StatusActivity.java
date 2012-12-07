@@ -69,6 +69,11 @@ public class StatusActivity extends Activity implements OnClickListener{
 	 */
 	public void onClick (View v)
 	{
+		
+		Log.d("Yamba", "before getWritableDatabase");
+		int testVariableDebug = 1;
+		Log.d("Yamba", String.valueOf(testVariableDebug));
+		
 		//if no preferences are added and the user is trying to post an update redirect him to the preference page		
 		if( !existsPreferences() )
 		{
